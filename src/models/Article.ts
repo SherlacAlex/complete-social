@@ -6,10 +6,10 @@ export class Article {
     userId: string;
 
     constructor(obj: Partial<Article>) {
-        this.title = obj.title;
-        this.content = obj.content;
-        this.image = obj.image;
-        this.status = obj.status;
-        this.userId = obj.userId;
+        this.title = obj.title!;
+        this.content = obj.content!;
+        this.image = obj.image!;
+        this.status = obj.status!;
+        this.userId = obj.userId!;
     }
 }
