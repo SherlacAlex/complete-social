@@ -2,9 +2,13 @@ import configs from "../configs/configs";
 import { Client, Databases, Storage, Query } from "appwrite";
 import { Article } from "../models/Article";
 
-export class Service {
+export class PostService {
 
-    constructor(private _client: Client, private _databases: Databases, private _query: Query, private _storage: Storage) {
+    private _client: Client = new Client();
+    private _databases: Databases;
+    private _storage: Storage;
+
+    constructor() {
         this._client.setEndpoint(configs.appwriteUrl).setProject(configs.projectId);
         this._databases = new Databases(this._client);
         this._storage = new Storage(this._client);
@@ -55,3 +59,7 @@ export class Service {
         }
     }
 }
+
+const postService = new PostService();
+
+export default postService;
