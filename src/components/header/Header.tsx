@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from "@/components/ui/button"
+import { Button } from '../../@/components/ui/button';
 
 
 
@@ -8,7 +8,7 @@ function Header() {
     <div className='main-container '>
       <div className="left-container">
         <div className="menu-contianer">
-
+          <Button> hello</Button>
         </div>
         <div className="logo-container">
           
