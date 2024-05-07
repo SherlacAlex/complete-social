@@ -1,10 +1,11 @@
 import configs from "../configs/configs";
-import { Client, Databases, Storage, ID } from "appwrite";
+import { Client, Storage, ID } from "appwrite";
 export class FileHandlerService {
+    private _client: Client = new Client();
+    private _storage: Storage;
 
-    constructor(private _client: Client, private _databases: Databases, private _storage: Storage) {
+    constructor() {
         this._client.setEndpoint(configs.appwriteUrl).setProject(configs.projectId);
-        this._databases = new Databases(this._client);
         this._storage = new Storage(this._client);
     }
 
@@ -35,3 +36,7 @@ export class FileHandlerService {
         }
     }
 }
+
+const fileHandlerService = new FileHandlerService();
+
+export default fileHandlerService;
