@@ -40,10 +40,8 @@ function App() {
   else {
     return(
       <>
-        <div>
-          <Header/>
-          <Footer/>
-        </div>
+        <Header/>
+        <Footer/>
       </>
     )
   }
