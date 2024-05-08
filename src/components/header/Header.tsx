@@ -2,7 +2,7 @@ import React, { ReactNode, useState } from 'react';
 import { Button } from '../../shadcn/components/ui/button';
 import './Header.css';
 import logo from '../../assets/logo.jpg'
-import { HamburgerMenuIcon, AvatarIcon, MagnifyingGlassIcon, Cross2Icon } from '@radix-ui/react-icons';
+import { HamburgerMenuIcon, AvatarIcon, MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,8 +13,6 @@ import {
   DropdownMenuTrigger,
 } from "../../shadcn/components/ui/dropdown-menu";
 import { Input } from "../../shadcn/components/ui/input"
-
-
 
 
 function Header() {
@@ -72,8 +70,8 @@ function Header() {
   }
 
   return (
-    <div className='main-container h-20 w-full flex py-6 px-8 justify-between'>
-      <div className="left-container align-middle ">
+    <div className='main-container h-20 w-full flex px-8 justify-between'>
+      <div className="left-container align-middle my-6">
         <div className="menu-contianer">
           <DropdownMenu>
             <DropdownMenuTrigger>
@@ -100,12 +98,12 @@ function Header() {
           </DropdownMenu>
         </div>
       </div>
-      <div className="center-container">
+      <div className="center-container flex align-middle">
           <div className="logo-container">
-            <img src={logo} alt="logo" />
+            <img className='w-16 h-16' src={logo} alt="logo" />
           </div>
       </div>
-      <div className="right-container w-96">
+      <div className="right-container w-96 my-6">
         {getUserUI()}
       </div>
     </div>
