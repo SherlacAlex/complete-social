@@ -8,6 +8,8 @@ import Header from './components/header/Header';
 import { UserAuth } from './models/UserAuth';
 import { BrowserRouter } from 'react-router-dom';
 import PostCard from './components/post-card/PostCard';
+import Login from './components/login/Login';
+import Signup from './components/signup/Signup';
 
 
 function App() {
@@ -49,9 +51,11 @@ function App() {
       <>
         <BrowserRouter>
           <Header isLoggedIn={isLoggedIn}/>
-          <PostCard $id='1'title="hi" featuredImage="./assets/logo.jpg"/>
+          {/* <Login/> */}
+          <Signup/>
+          {/* <PostCard $id='1'title="hi" featuredImage="./assets/logo.jpg"/> */}
         </BrowserRouter>
-        <Footer/>
+        {/* <Footer/> */}
       </>
     )
   }
