@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import authService from './appwrite-services/auth-service';
 import { logIn, logOut } from './store/AuthSlice';
 import Footer from './components/footer/Footer';
 import Header from './components/header/Header';
+import { UserAuth } from './models/UserAuth';
+import { BrowserRouter } from 'react-router-dom';
+import PostCard from './components/post-card/PostCard';
+
 
 function App() {
 
   const [ loading, setLoading ] = useState<boolean>(true);
   const dispatch = useDispatch();
+
+  const isLoggedIn = useSelector((state:UserAuth) => state.loggedStatus);
+  
 
   useEffect(() => {
     authService.getCurrentUser().then((userDetails) => {
@@ -40,7 +47,10 @@ function App() {
   else {
     return(
       <>
-        <Header/>
+        <BrowserRouter>
+          <Header isLoggedIn={isLoggedIn}/>
+          <PostCard $id='1'title="hi" featuredImage="./assets/logo.jpg"/>
+        </BrowserRouter>
         <Footer/>
       </>
     )

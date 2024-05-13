@@ -35,6 +35,10 @@ export class FileHandlerService {
             console.error(error)
         }
     }
+
+    public getFilePreview(fileId:string) {
+        return this._storage.getFilePreview(configs.bucketId, fileId)
+    }
 }
 
 const fileHandlerService = new FileHandlerService();
