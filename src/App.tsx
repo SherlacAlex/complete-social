@@ -10,6 +10,7 @@ import { BrowserRouter } from 'react-router-dom';
 import PostCard from './components/post-card/PostCard';
 import Login from './components/login/Login';
 import Signup from './components/signup/Signup';
+import { RootState } from './store/store';
 
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
   const [ loading, setLoading ] = useState<boolean>(true);
   const dispatch = useDispatch();
 
-  const isLoggedIn = useSelector((state:UserAuth) => state.loggedStatus);
+  const isLoggedIn = useSelector((state:RootState) => state.auth.loggedStatus);
   
 
   useEffect(() => {

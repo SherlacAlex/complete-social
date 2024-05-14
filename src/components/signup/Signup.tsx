@@ -38,7 +38,7 @@ function Signup() {
     }
 
   return (
-    <div className='flex justify-center items-center w-[396px] h-[456px]'>
+    <div className='flex justify-center items-center w-[396px] h-[456px] border rounded-lg border-gray-200'>
       <div className="form-container">
         <form onSubmit={handleSubmit(signUserUp)}>
           <div className="form-controls">
