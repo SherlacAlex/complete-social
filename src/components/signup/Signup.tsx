@@ -7,6 +7,9 @@ import { logIn } from '../../store/AuthSlice'
 import { Button } from '../../shadcn/components/ui/button'
 import { Label } from '../../shadcn/components/ui/label'
 import { Input } from '../../shadcn/components/ui/input'
+import './signup.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFacebook, faGoogle, faTwitter } from '@fortawesome/free-brands-svg-icons'
 
 type Inputs = {
     userEmail: string,
@@ -20,6 +23,7 @@ function Signup() {
     const dispatch = useDispatch();
     const { register, handleSubmit } = useForm<Inputs>();
     const [signinError, setSigninError] = useState<boolean>(false);
+    const [isLogin, setIsLogin] = useState<boolean>(true);
 
     const signUserUp = async(data: Inputs) => {
         setSigninError(false);
@@ -38,23 +42,35 @@ function Signup() {
     }
 
   return (
-    <div className='flex justify-center items-center w-[396px] h-[456px] border rounded-lg border-gray-200'>
-      <div className="form-container">
+    <div className={'container'+ (isLogin ? ' active': '')}>
+      <div className="form-container sign-up">
         <form onSubmit={handleSubmit(signUserUp)}>
+          <div className="social-icons">
+            <div className="google-icon icon">
+              <FontAwesomeIcon icon={faGoogle} />
+            </div>
+            <div className="twitter-icon icon">
+              <FontAwesomeIcon icon={faTwitter} />
+            </div>
+            <div className="facebook-icon icon">
+              <FontAwesomeIcon icon={faFacebook} />
+            </div>
+          </div>
+          <span className="alternative">Or use your Email</span>
           <div className="form-controls">
-            <Input className='w-[330px] h-[52px] p-2 m-4' placeholder='Enter Your Email' type='email' {...register("userEmail", {
+            <Input className='' placeholder='Enter Your Email' type='email' {...register("userEmail", {
               required: true, validate: {
                 matchPattern: (value:string) => /^([\w\.\-_]+)?\w+@[\w-_]+(\.\w+){1,}$/.test(value) || "Email Address should be valid"
               }
             })}></Input>
-            <Input className='w-[330px] h-[52px] p-2 m-4' placeholder='Password' type='password' {...register("userPassword",{
+            <Input className='' placeholder='Password' type='password' {...register("userPassword",{
               required: true,
             })}></Input>
-            <Input className='w-[330px] h-[52px] p-2 m-4' placeholder='Username' type='text' {...register("userName",{
+            <Input className='' placeholder='Username' type='text' {...register("userName",{
               required: true,
             })}></Input>
 
-            <Button type='submit' className='w-[330px] h-[52px] p-2 m-4'>Register</Button>
+            <Button type='submit' className=''>Register</Button>
           </div>
         </form>
         <div className="error-container">
@@ -65,11 +81,46 @@ function Signup() {
             }
         </div>
         <div className="divider border bg-grey-600  m-4 "></div>
-        <div className="login-container flex justify-center items-center">
-            <Button variant={'secondary'} className='w-[240px] p-2 m-4'>Login</Button>
+      </div>
+      <div className="form-container sign-in">
+        <form onSubmit={handleSubmit(signUserUp)}>
+          <div className="social-icons">
+            <div className="google-icon icon">
+              <FontAwesomeIcon icon={faGoogle} />
+            </div>
+            <div className="twitter-icon icon">
+              <FontAwesomeIcon icon={faTwitter} />
+            </div>
+            <div className="facebook-icon icon">
+              <FontAwesomeIcon icon={faFacebook} />
+            </div>
+          </div>
+          <span className="alternative">Or use your Email</span>
+          <div className="form-controls">
+            <Input className='' placeholder='Enter Your Email' type='email' {...register("userEmail", {
+              required: true, validate: {
+                matchPattern: (value:string) => /^([\w\.\-_]+)?\w+@[\w-_]+(\.\w+){1,}$/.test(value) || "Email Address should be valid"
+              }
+            })}></Input>
+            <Input className='' placeholder='Password' type='password' {...register("userPassword",{
+              required: true,
+            })}></Input>
+            <Button type='submit' className=''>Log In</Button>
+          </div>
+        </form>
+      </div>
+      <div className="toggle-container">
+        <div className="toggle">
+          <div className="toggle-panel toggle-left" onClick={() => setIsLogin(false)}>
+            <span>Welcome Back</span>
+            <span>Sign Up?</span>
+          </div>
+          <div className="toggle-panel toggle-right" onClick={() => setIsLogin(true)}>
+            <span>Hello, There!</span>
+            <span>Log In?</span>
+          </div>
         </div>
       </div>
-      
     </div>
   )
 }

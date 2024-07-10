@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import { useDispatch, useSelector } from 'react-redux';
 import authService from './appwrite-services/auth-service';
@@ -18,7 +18,7 @@ function App() {
   const [ loading, setLoading ] = useState<boolean>(true);
   const dispatch = useDispatch();
 
-  const isLoggedIn = useSelector((state:RootState) => state.auth.loggedStatus);
+  const isLoggedIn = useRef(false);
   
 
   useEffect(() => {
@@ -51,7 +51,7 @@ function App() {
     return(
       <>
         <BrowserRouter>
-          <Header isLoggedIn={isLoggedIn}/>
+          <Header isLoggedIn={isLoggedIn.current}/>
           {/* <Login/> */}
           <Signup/>
           {/* <PostCard $id='1'title="hi" featuredImage="./assets/logo.jpg"/> */}

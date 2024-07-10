@@ -98,7 +98,7 @@ function Header({ isLoggedIn }: HeaderPropsType) {
         return(
           <div className="logged-out-container flex justify-evenly">
             <Button variant={'secondary'} onClick={() => navigate(navItems[1].to)}>Login</Button>
-            <Button onClick={() => navigate(navItems[2].to)}>Register</Button>
+            <Button className='register' onClick={() => navigate(navItems[2].to)}>Register</Button>
           </div>
         );
       }

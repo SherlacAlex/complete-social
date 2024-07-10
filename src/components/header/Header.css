@@ -1,3 +1,7 @@
 .main-container {
     background-color: var(--bg-plain);
 }
+
+button.register {
+    background-color: #512da8;
+}

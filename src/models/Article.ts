@@ -4,6 +4,7 @@ export class Article {
     image: string;
     status: string;
     userId: string;
+    postId: string;
 
     constructor(obj: Partial<Article>) {
         this.title = obj.title!;
@@ -11,5 +12,6 @@ export class Article {
         this.image = obj.image!;
         this.status = obj.status!;
         this.userId = obj.userId!;
+        this.postId = obj.postId!;
     }
 }
