@@ -19,27 +19,45 @@ type Inputs = {
 
 function Signup() {
 
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const { register, handleSubmit } = useForm<Inputs>();
-    const [signinError, setSigninError] = useState<boolean>(false);
-    const [isLogin, setIsLogin] = useState<boolean>(true);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { register, handleSubmit } = useForm<Inputs>();
+  const [signinError, setSigninError] = useState<boolean>(false);
+  const [loginError, setLoginError] = useState<boolean>(false);
+  const [isLogin, setIsLogin] = useState<boolean>(true);
 
-    const signUserUp = async(data: Inputs) => {
-        setSigninError(false);
-        try {
-            const session = await authService.createAccount("", "", "");
-            if(session) {
-                const userData = await authService.getCurrentUser();
-                if(userData) {
-                    dispatch(logIn(userData));
-                    navigate("/");
-                }
-            }
-        } catch (error) {
-            setSigninError(true)
+  const signUserUp = async(data: Inputs) => {
+      setSigninError(false);
+      try {
+          const session = await authService.createAccount("", "", "");
+          if(session) {
+              const userData = await authService.getCurrentUser();
+              if(userData) {
+                  dispatch(logIn(userData));
+                  navigate("/");
+              }
+          }
+      } catch (error) {
+          setSigninError(true)
+      }
+  }
+    
+  const logUserIn = async(data: Inputs): Promise<void> => {
+    setLoginError(false);
+    try {
+      const session = await authService.userLogin("", "");
+      if(session) {
+        const userData = await authService.getCurrentUser();
+        if(userData) {
+          dispatch(logIn(userData));
+          navigate("/");
         }
+      }
+
+    } catch (error) {
+      setLoginError(true);
     }
+  }
 
   return (
     <div className={'container'+ (isLogin ? ' active': '')}>
@@ -83,7 +101,7 @@ function Signup() {
         <div className="divider border bg-grey-600  m-4 "></div>
       </div>
       <div className="form-container sign-in">
-        <form onSubmit={handleSubmit(signUserUp)}>
+        <form onSubmit={handleSubmit(logUserIn)}>
           <div className="social-icons">
             <div className="google-icon icon">
               <FontAwesomeIcon icon={faGoogle} />
