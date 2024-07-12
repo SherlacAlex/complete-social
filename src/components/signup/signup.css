@@ -21,7 +21,6 @@
 }
 
 .container button{
-  background-color: #512da8;
   color: #fff;
   font-size: 12px;
   padding: 10px 45px;
@@ -42,6 +41,14 @@
   flex-direction: column;
   padding: 0 40px;
   height: 100%;
+}
+
+.register-button {
+  background-color: #4f40ad;
+}
+
+.login-button {
+  background-color: #512da8;
 }
 
 .container input{
@@ -121,7 +128,7 @@
   overflow: hidden;
   transition: all 0.6s ease-in-out;
   border-radius: 150px 0 0 100px;
-  z-index: 1000;
+  z-index: 10;
 }
 
 .container.active .toggle-container{

@@ -1,65 +1,36 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import authService from './appwrite-services/auth-service';
+import { Route, Routes } from 'react-router-dom';
 import { logIn, logOut } from './store/AuthSlice';
-import Footer from './components/footer/Footer';
 import Header from './components/header/Header';
-import { UserAuth } from './models/UserAuth';
-import { BrowserRouter } from 'react-router-dom';
-import PostCard from './components/post-card/PostCard';
-import Login from './components/login/Login';
 import Signup from './components/signup/Signup';
-import { RootState } from './store/store';
+import Home from './components/Home/Home';
+import AuthLayout from './components/Layout/AuthLayout';
+import HomeLayout from './components/Layout/HomeLayout';
 
 
 function App() {
 
-  const [ loading, setLoading ] = useState<boolean>(true);
-  const dispatch = useDispatch();
+  return(
+    <>
+      <main className='flex h-screen'>
+        <Routes>
+          {/* public routes */}
+          <Route element={<AuthLayout/>}>
+            <Route path='/signin' element={<Signup showRegister={false}/>}/>
+            <Route path='/signup' element={<Signup showRegister={true}/>}/>
+          </Route>
 
-  const isLoggedIn = useRef(false);
-  
-
-  useEffect(() => {
-    authService.getCurrentUser().then((userDetails) => {
-        if(userDetails) {
-          dispatch(logIn({userDetails}));
-        }
-        else {
-          dispatch(logOut());
-        }
-      }
-    )
-    .catch((error) => {
-    })
-    .finally(() => {
-      setLoading(false);
-    })
-  }, [])
-
-  if(loading) {
-    return(
-      <>
-        <div className='bg-red-300'>
-          loading
-        </div>
-      </>
-    )
-  }
-  else {
-    return(
-      <>
-        <BrowserRouter>
-          <Header isLoggedIn={isLoggedIn.current}/>
-          {/* <Login/> */}
-          <Signup/>
-          {/* <PostCard $id='1'title="hi" featuredImage="./assets/logo.jpg"/> */}
-        </BrowserRouter>
-        {/* <Footer/> */}
-      </>
-    )
-  }
+          {/* private routes */}
+          <Route element={<HomeLayout/>}>
+            <Route index element={<Home/>}/>
+          </Route>
+        </Routes>
+      </main>
+    </>
+  )
 }
 
 export default App;

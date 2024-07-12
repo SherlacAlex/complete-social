@@ -1,28 +1,13 @@
-import configs from "../configs/configs";
+import configs, { account } from "../configs/configs";
 import { Client, Account, ID } from "appwrite";
+import { ISignUpData } from "../models/AuthData";
 
 export class AuthService {
 
-    client = new Client();
-    
-    account;
-
-    constructor() {
-        this.client.setEndpoint(configs.appwriteUrl)
-        .setProject(configs.projectId); 
-        this.account = new Account(this.client);
-    }
-
-    public async createAccount(email: string, password: string, name: string) {
+    public async createAccount(userData: ISignUpData) {
         try {
-            const userAccount = await this.account.create(ID.unique(),email, password, name);
-            
-            if(userAccount) {
-                this.userLogin(email, password);
-            }
-            else {
-                return userAccount;
-            }
+            const userAccount = await account.create(ID.unique(),userData.email, userData.password, userData.username);
+            return userAccount;
         } catch (error) {
             throw error;
         }
@@ -30,7 +15,7 @@ export class AuthService {
 
     public async userLogin(email:string, password: string){
         try {
-            const userAccount = await this.account.createEmailPasswordSession(email, password);
+            const userAccount = await account.createEmailPasswordSession(email, password);
             return userAccount; 
         } catch (error) {
             throw error;
@@ -39,7 +24,7 @@ export class AuthService {
 
     public async getCurrentUser() {
         try {
-            return await this.account.get();
+            return await account.get();
         } catch (error) {
             throw error
         }
@@ -47,7 +32,7 @@ export class AuthService {
 
     public async logUserOut() {
         try {
-            await this.account.deleteSession('current')
+            await account.deleteSession('current')
         } catch (error) {
             throw error
         }

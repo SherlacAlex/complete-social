@@ -1,7 +1,6 @@
 import React, { ReactNode, useState, } from 'react';
 import { Button } from '../../shadcn/components/ui/button';
 import './Header.css';
-import logo from '../../assets/logo.jpg'
 import { HamburgerMenuIcon, AvatarIcon, MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import {
   DropdownMenu,
@@ -174,7 +173,7 @@ function Header({ isLoggedIn }: HeaderPropsType) {
       </div>
       <div className="center-container flex align-middle">
           <div className="logo-container">
-              <img className='w-16 h-16' src={logo} alt="logo" onClick={() => navigate(navItems[0].to)} />
+              <img className='w-16 h-16' src={''} alt="logo" onClick={() => navigate(navItems[0].to)} />
           </div>
       </div>
       <div className="right-container w-96 my-6">

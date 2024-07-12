@@ -4,14 +4,16 @@ import { Article } from "../models/Article";
 
 export class PostService {
 
-    private _client: Client = new Client();
+    client = new Client();
     private _databases: Databases;
     private _storage: Storage;
 
     constructor() {
-        this._client.setEndpoint(configs.appwriteUrl).setProject(configs.projectId);
-        this._databases = new Databases(this._client);
-        this._storage = new Storage(this._client);
+        console.log(configs.appwriteUrl)
+        this.client.setEndpoint(configs.appwriteUrl)
+        .setProject(configs.projectId); 
+        this._databases = new Databases(this.client);
+        this._storage = new Storage(this.client);
     }
 
     public async getAllPost() {
@@ -35,7 +37,7 @@ export class PostService {
 
     public async createPost(referenceId: string, post: Article) {
         try {
-            return await this._databases.createDocument(configs.databaseId, configs.collectionId, referenceId, post);
+            return await this._databases.createDocument('65c279c625b68885b0ae', '65c27a0233ff7d562c07', referenceId, post);
         } catch (error) {
             console.error(error);
         }
