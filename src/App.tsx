@@ -2,16 +2,27 @@ import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import { useDispatch } from 'react-redux';
 import authService from './appwrite-services/auth-service';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { logIn, logOut } from './store/AuthSlice';
 import Header from './components/header/Header';
 import Signup from './components/signup/Signup';
-import Home from './components/Home/Home';
 import AuthLayout from './components/Layout/AuthLayout';
 import HomeLayout from './components/Layout/HomeLayout';
+import { Toaster } from './shadcn/components/ui/toaster';
+import Home from './components/Home/Home';
 
 
 function App() {
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if(localStorage.getItem('cookieFallback') == '[]') {
+      navigate('/signin');
+    }
+
+    authService.getCurrentUser();
+  }, [])
 
   return(
     <>
@@ -28,6 +39,7 @@ function App() {
             <Route index element={<Home/>}/>
           </Route>
         </Routes>
+        <Toaster />
       </main>
     </>
   )

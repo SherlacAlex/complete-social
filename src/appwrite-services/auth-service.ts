@@ -1,21 +1,48 @@
-import configs, { account } from "../configs/configs";
-import { Client, Account, ID } from "appwrite";
-import { ISignUpData } from "../models/AuthData";
+import configs, { account, avatars, database } from "../configs/configs";
+import { ID, Query } from "appwrite";
+import { ILoginData, ISignUpData } from "../models/AuthData";
+import { IUserData } from "../models/UserData";
 
 export class AuthService {
 
     public async createAccount(userData: ISignUpData) {
         try {
-            const userAccount = await account.create(ID.unique(),userData.email, userData.password, userData.username);
+            const userAccount = await account.create(ID.unique(), userData.email, userData.password, userData.username);
+            
+            if(!userAccount) throw Error;
+
+            const avatar = avatars.getInitials(userData.username);
+            const userDetails: IUserData = {
+                accountid: userAccount.$id,
+                email: userAccount.email,
+                name: userAccount.name,
+                username: userData.username,
+                imageurl: avatar
+            }
+
+            const newUser = await this.addNewUser(userDetails)
             return userAccount;
         } catch (error) {
             throw error;
         }
     }
 
-    public async userLogin(email:string, password: string){
+    public async addNewUser(userData: IUserData) {
         try {
-            const userAccount = await account.createEmailPasswordSession(email, password);
+            const newUser = await database.createDocument(configs.databaseId,
+                configs.usersCollectionId, 
+                ID.unique(),
+                userData)
+
+            return newUser;
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    public async userLogin(userData: ILoginData){
+        try {
+            const userAccount = await account.createEmailPasswordSession(userData.username, userData.password);
             return userAccount; 
         } catch (error) {
             throw error;
@@ -24,9 +51,16 @@ export class AuthService {
 
     public async getCurrentUser() {
         try {
-            return await account.get();
+            const currentAccount = await account.get();
+            if(!currentAccount) throw Error;
+
+            const currentUser = await database.listDocuments(configs.databaseId, configs.usersCollectionId, [Query.equal('accountid', currentAccount.$id)]);
+            if(!currentUser) throw Error;
+
+            return currentUser.documents[0];
         } catch (error) {
-            throw error
+            console.log(error);
+            return null;
         }
     }
 

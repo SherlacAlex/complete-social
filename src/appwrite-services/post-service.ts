@@ -21,7 +21,7 @@ export class PostService {
             Query.equal('status', 'active')
         ];
         try {
-            return await this._databases.listDocuments(configs.databaseId, configs.collectionId, queries)
+            return await this._databases.listDocuments(configs.databaseId, configs.postsCollectionId, queries)
         } catch (error) {
             console.error(error);
         }
@@ -29,7 +29,7 @@ export class PostService {
 
     public async getPost(referenceId: string) {
         try {
-            return await this._databases.getDocument(configs.databaseId, configs.collectionId, referenceId)
+            return await this._databases.getDocument(configs.databaseId, configs.postsCollectionId, referenceId)
         } catch (error) {
             console.error(error)
         }
@@ -45,7 +45,7 @@ export class PostService {
 
     public async updatePost(referenceId: string, post: Article) {
         try {
-            return await this._databases.updateDocument(configs.databaseId, configs.collectionId, referenceId, post);
+            return await this._databases.updateDocument(configs.databaseId, configs.postsCollectionId, referenceId, post);
         } catch (error) {
             console.error(error)
         }
@@ -53,7 +53,7 @@ export class PostService {
 
     public async deletePost(referenceId: string) {
         try {
-            await this._databases.deleteDocument(configs.databaseId, configs.collectionId, referenceId);
+            await this._databases.deleteDocument(configs.databaseId, configs.postsCollectionId, referenceId);
             return true;
         } catch (error) {
             console.error(error)

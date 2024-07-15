@@ -1,8 +1,10 @@
 import React from 'react'
+import Header from '../header/Header'
 
 function HomeLayout() {
   return (
-    <div>HomeLayout</div>
+    <div className='w-full md:flex '>
+    </div>
   )
 }
 

@@ -1,4 +1,4 @@
-import { ObjectSchema, array, date, object, string } from "yup";
+import { object, string } from "yup";
 import { ILoginData, ISignUpData } from "../models/AuthData";
 
 export class AuthFormHelperService {

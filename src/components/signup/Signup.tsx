@@ -1,5 +1,4 @@
 import React, { useState} from 'react'
-import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import authService from '../../appwrite-services/auth-service'
@@ -9,10 +8,12 @@ import { Label } from '../../shadcn/components/ui/label'
 import { Input } from '../../shadcn/components/ui/input'
 import './signup.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
+import { Field, FieldProps, Form, Formik, FormikHelpers, FormikProps } from 'formik';
 import { faFacebook, faGoogle, faTwitter } from '@fortawesome/free-brands-svg-icons'
 import { authFormHelperService } from '../../form-services/auth-form-services'
 import { ILoginData, ISignUpData } from '../../models/AuthData'
+import { useToast } from '../../shadcn/components/ui/use-toast'
+import { useSignInMutation, useUserAccountCreation } from '../../react-query/Queries-Mutations'
 
 interface SignupProps {
   showRegister: boolean;
@@ -22,6 +23,10 @@ function Signup({ showRegister = true }: SignupProps) {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { toast } = useToast();
+  const { mutateAsync: createUserAccount, isPending: isCreatingUser} = useUserAccountCreation();
+  const { mutateAsync: loginUserAccount, isPending: isLoggingIn} = useSignInMutation()
+
   const [signinError, setSigninError] = useState<boolean>(false);
   const [loginError, setLoginError] = useState<boolean>(false);
   const [isLogin, setIsLogin] = useState<boolean>(showRegister);
@@ -32,24 +37,66 @@ function Signup({ showRegister = true }: SignupProps) {
   const loginValues = authFormHelperService.getLoginDefaultValues();
   const loginValidationSchema = authFormHelperService.getLoginFormSchema();
 
-  const signUserUp = async (data: ISignUpData) => {
+  const signUserUp = async (data: ISignUpData, { resetForm }: FormikHelpers<ISignUpData>) => {
       try {
-          const session = await authService.createAccount(data);
-          console.log(session);
+          const newUser = await createUserAccount(data);
+
+          if(!newUser) {
+            return toast({
+              variant: "destructive",
+              description: "Uh oh! Something went wrong."
+            });
+          };
+
+          const session = await loginUserAccount({ username: data.email, password: data.password } as ILoginData);
+
+          if(!session) {
+            return toast({
+              variant: "destructive",
+              description: "Uh oh! Something went wrong."
+            });
+          };
+
+          const userData = await authService.getCurrentUser();
+          if(userData) {
+            dispatch(logIn(userData));
+            resetForm();
+            navigate("/");
+          }
+          else {
+            return toast({
+              variant: "destructive",
+              description: "Uh oh! Something went wrong."
+            });
+          }
+
       } catch (error) {
           setSigninError(true)
       }
   }
     
-  const logUserIn = async(data: ILoginData): Promise<void> => {
+  const logUserIn = async(data: ILoginData, { resetForm }: FormikHelpers<ILoginData>) => {
     try {
-      const session = await authService.userLogin("", "");
-      if(session) {
-        const userData = await authService.getCurrentUser();
-        if(userData) {
-          dispatch(logIn(userData));
-          navigate("/");
-        }
+      const session = await loginUserAccount(data);
+
+      if(!session) {
+        return toast({
+          variant: "destructive",
+          description: "Uh oh! Something went wrong."
+        });
+      };
+
+      const userData = await authService.getCurrentUser();
+      if(userData) {
+        dispatch(logIn(userData));
+        resetForm();
+        navigate("/");
+      }
+      else {
+        return toast({
+          variant: "destructive",
+          description: "Uh oh! Something went wrong."
+        });
       }
 
     } catch (error) {

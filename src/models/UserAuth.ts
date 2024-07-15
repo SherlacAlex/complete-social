@@ -1,9 +1,14 @@
-export class UserAuth {
-    public loggedStatus: boolean;
-    public userData: any;
+export interface UserAuth {
+    isAuthenticated: boolean,
+    isLoading: boolean,
+    userData: UserDetails,
+}
 
-    constructor(obj: Partial<UserAuth>) {
-        this.loggedStatus = obj.loggedStatus!;
-        this.userData = obj.userData!;
-    }
+export interface UserDetails {
+    id: string,
+    name: string,
+    username: string,
+    email: string,
+    bro: string,
+    imageurl: URL,
 }
